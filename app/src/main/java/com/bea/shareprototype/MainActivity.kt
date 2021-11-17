@@ -1,63 +1,57 @@
 package com.bea.shareprototype
 
-import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
-import com.bea.shareprototype.databinding.ActivityMainBinding
-import com.google.gson.Gson
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
-
+import android.os.Bundle
+import android.os.Environment
+import android.util.Log
+import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import java.io.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var fileReader:FileReader
+    private lateinit var fileWriter:FileWriter
+    private lateinit var bufferReader:BufferedReader
+    private lateinit var bufferWriter:BufferedWriter
+    private var response:String? = null
 
-    private lateinit var binding: ActivityMainBinding
-    private val fileName = "prototypeTest.json"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
+        }
 
-        val config1: MutableMap<String, String> = HashMap()
-        config1["component1"] = "url1"
-        config1["component2"] = "url1"
-        config1["component3"] = "url1"
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
+        }
 
-        val config2: MutableMap<String, String> = HashMap()
-        config2["component1"] = "url1"
-        config2["component2"] = "url1"
-        config2["component3"] = "url1"
 
-        val map: MutableMap<String, Map<String, String>> = HashMap()
-        map["config1"] = config1
-        map["config2"] = config2
 
-        val data = Data(map)
+        var saveButton:View = findViewById<View>(R.id.BtnShare)
+        var file:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"myJSONfile")
 
-        val gson = Gson()
-        val json = gson.toJson(data)
-
-        binding.BtnShare.setOnClickListener {
-            // Create a path where we will place our private file on external storage.
-            val file = File(getExternalFilesDir(null), fileName)
-            file.createNewFile()
-
-            if (file.exists()) {
-                val fo: OutputStream = FileOutputStream(file)
-                fo.write(json.toByteArray())
-                fo.close()
-                println("file created: $file")
+        saveButton.setOnClickListener {
+            if (!file.exists()) {
+                try {
+                    file.createNewFile()
+                    var fileWriter = FileWriter(file.absoluteFile)
+                    bufferWriter = BufferedWriter(fileWriter)
+                    bufferWriter.write("{}")
+                    bufferWriter.close()
+                    Log.i("New File",file.name + file.absolutePath )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
-
-            val data = gson.fromJson(json, Data::class.java)
-            val url = data.map!!["config1"]!!["component1"]
-
+            Log.i("File Exist",file.name + file.absolutePath )
 
         }
     }
-
-
 }
