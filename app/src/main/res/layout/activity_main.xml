@@ -22,27 +22,42 @@
         android:layout_height="wrap_content"
         android:text="Enter Message"
         android:hint="message"
-        app:layout_constraintBottom_toTopOf="@+id/BtnShare"
+        app:layout_constraintBottom_toTopOf="@+id/BtnLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
-
+<LinearLayout
+    android:id="@+id/BtnLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/EditText">
     <Button
-        android:id="@+id/BtnShare"
+        android:id="@+id/BtnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share"
-        app:layout_constraintBottom_toTopOf="@+id/TextBoxForFile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditText"/>
+        android:layout_margin="5dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
+    <Button
+        android:id="@+id/BtnRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Read"
+        />
+</LinearLayout>
     <TextView
-        android:id="@+id/TextBoxForFile"
+        android:id="@+id/ReadText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnShare"/>
+        app:layout_constraintTop_toBottomOf="@+id/BtnLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
