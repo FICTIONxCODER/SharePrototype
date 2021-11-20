@@ -26,14 +26,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
-        }
+        }*/
 
         var saveButton:View = findViewById(R.id.BtnSave)
         var readButton:View = findViewById(R.id.BtnRead)
@@ -46,12 +46,15 @@ class MainActivity : AppCompatActivity() {
         )
 
         saveButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
+            }
             if (!file.exists()) {
                 try {
                     file.createNewFile()
                     var fileWriter = FileWriter(file.absoluteFile)
                     bufferWriter = BufferedWriter(fileWriter)
-                    bufferWriter.write("{Hello world}")
+                    bufferWriter.write(Data(fileDate).JSONData().toString())
                     bufferWriter.close()
                     Log.i("New File",file.name + file.absolutePath )
                 } catch (e: IOException) {
@@ -62,13 +65,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         readButton.setOnClickListener {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
+            }
+            Log.i("Read Clicked","indise read click listner")
             var output:StringBuffer = StringBuffer()
             fileReader = FileReader(file.absoluteFile)
             bufferReader = BufferedReader(fileReader)
             var line:String = ""
             while ((bufferReader.readLine()) != null){
                 output.append(line+"\n")
-                }
+                Log.i("Read Clicked","Reading line")
+                Log.i("Reading", output.toString())
+            }
             response = output.toString()
             Log.i("Read",response!!)
             ReadTextView.text = response!!
