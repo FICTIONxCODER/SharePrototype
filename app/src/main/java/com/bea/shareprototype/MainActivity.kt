@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.*
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,15 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Here, thisActivity is the current activity
-        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1);
-        }*/
 
         var saveButton:View = findViewById(R.id.BtnSave)
         var readButton:View = findViewById(R.id.BtnRead)
@@ -71,19 +65,18 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
             }
             Log.i("Read Clicked","indise read click listner")
-            var output:StringBuffer = StringBuffer()
-            fileReader = FileReader(file.absoluteFile)
-            bufferReader = BufferedReader(fileReader)
-            var line:String = ""
-            while ((bufferReader.readLine()) != null){
-                output.append(line+"\n")
-                Log.i("Read Clicked","Reading line")
-                Log.i("Reading", output.toString())
+            val stream = FileInputStream(file)
+            var jString: String?
+            try {
+                val fc: FileChannel = stream.channel
+                val bb: MappedByteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())
+                /* Instead of using default, pass in a decoder. */
+                 jString = Charset.defaultCharset().decode(bb).toString()
+                 ReadTextView.text = jString!!
+                Log.i("Reading", jString)
+            } finally {
+                stream.close()
             }
-            response = output.toString()
-            Log.i("Read",response!!)
-            ReadTextView.text = response!!
-            bufferReader.close()
         }
     }
 }
