@@ -1,11 +1,13 @@
 package com.bea.shareprototype
 
-import android.provider.DocumentsContract.createDocument
+import android.R.string
 import android.util.Log
-import com.google.gson.annotations.SerializedName
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.text.SimpleDateFormat
+import java.util.*
+
 
 //  Created by BEA on 2021.
 //  Copyright © 2021 BEA. All rights reserved.
@@ -13,7 +15,8 @@ import java.text.SimpleDateFormat
 data class Data(var date: String) {
 
     private var jsonBody = JSONObject()
-    private var parameters: JSONObject = JSONObject()
+    var allItems: ArrayList<ParameterDataList> = ArrayList<ParameterDataList>()
+    //private var parameters=mutableListOf<ParameterDataList>()
     fun JSONData():JSONObject {
         try {
             jsonBody.put("Company", "BEA")
@@ -25,11 +28,14 @@ data class Data(var date: String) {
             jsonBody.put("unit", 1)
             jsonBody.put("DD_localisation", "41.4033,02.17403")
 
-            parameters.put("id","U01" )
-            parameters.put("restore","1")
-            parameters.put("value","5")
-
-            jsonBody.put("parameters", parameters)
+            val parameterList = ParameterDataList("U01","1","5")
+            val parameterList2 = ParameterDataList("U02","0","2")
+            allItems.add(parameterList2)
+            allItems.add(parameterList)
+            val gson :Gson = Gson()
+            val parameterjson:String = gson.toJson(allItems)
+            jsonBody.put("parameters",JSONObject(parameterjson))
+            Log.i("JSON Object", parameterjson)
         } catch (e: JSONException) {
             e.printStackTrace()
         }

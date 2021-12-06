@@ -18,11 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var fileReader:FileReader
-    private lateinit var fileWriter:FileWriter
-    private lateinit var bufferReader:BufferedReader
     private lateinit var bufferWriter:BufferedWriter
-    private var response:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
