@@ -34,8 +34,7 @@ data class Data(var date: String) {
             allItems.add(parameterList)
             val gson :Gson = Gson()
             val parameterjson:String = gson.toJson(allItems)
-            jsonBody.put("parameters",JSONObject(parameterjson))
-            Log.i("JSON Object", parameterjson)
+            jsonBody.put("parameters",parameterjson)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
