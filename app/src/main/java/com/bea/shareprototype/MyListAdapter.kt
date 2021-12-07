@@ -1,17 +1,23 @@
 package com.bea.shareprototype
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 
 //  Created by BEA on 2021.
 //  Copyright © 2021 BEA. All rights reserved.
 
 
-class MyListAdapter(private val mList: List<MyListData>): RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
+class MyListAdapter(context: Context,private val mList: List<MyListData>): RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
+    val context = context
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -33,6 +39,18 @@ class MyListAdapter(private val mList: List<MyListData>): RecyclerView.Adapter<M
         // sets the text to the textview from our itemHolder class
         holder.textView.text = ItemsViewModel.text
 
+        holder.optionmenu.setOnClickListener {
+            val popup = PopupMenu(context, holder.optionmenu)
+            popup.inflate(R.menu.options_menu)
+            popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
+                override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                    Log.e(">>",p0.toString())
+                    return true
+                }
+
+            })
+            popup.show();
+        }
     }
 
     // return the number of the items in the list
@@ -44,5 +62,6 @@ class MyListAdapter(private val mList: List<MyListData>): RecyclerView.Adapter<M
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
         val textView: TextView = itemView.findViewById(R.id.textView)
+        val optionmenu : TextView = itemView.findViewById(R.id.textViewOptions)
     }
 }
