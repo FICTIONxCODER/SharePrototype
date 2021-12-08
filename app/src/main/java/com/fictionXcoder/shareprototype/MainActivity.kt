@@ -1,4 +1,4 @@
-package com.bea.shareprototype
+package com.fictionXcoder.shareprototype
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,18 +25,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
-
-
         var saveButton:View = findViewById(R.id.BtnSave)
         var readButton:View = findViewById(R.id.BtnRead)
         val dateFormatGmt = SimpleDateFormat("dd:MM:yyyyHH:mm:ss")
         dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"))
         var fileDate = dateFormatGmt.format(Date()).toString() + ""
         var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "WS_SensorCANNumber$fileDate.json"
+            "My_SensorCANNumber$fileDate.json"
         )
 
         saveButton.setOnClickListener {
@@ -109,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }*/
 
                 // This will pass the ArrayList to our Adapter
-                val adapter = MyListAdapter(data)
+                val adapter = MyListAdapter(this,data)
 
                 // Setting the Adapter with the recyclerview
                 recyclerview.adapter = adapter
@@ -119,4 +113,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }
