@@ -1,4 +1,4 @@
-package com.bea.shareprototype
+package com.fictionXcoder.shareprototype
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"))
         var fileDate = dateFormatGmt.format(Date()).toString() + ""
         var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "WS_SensorCANNumber$fileDate.json"
+            "My_SensorCANNumber$fileDate.json"
         )
 
         saveButton.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.bea.shareprototype
+package com.fictionXcoder.shareprototype
 
 import org.junit.Test
 

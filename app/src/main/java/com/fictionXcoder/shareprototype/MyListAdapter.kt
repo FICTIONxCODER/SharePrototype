@@ -1,6 +1,5 @@
-package com.bea.shareprototype
+package com.fictionXcoder.shareprototype
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 
-//  Created by BEA on 2021.
-//  Copyright © 2021 BEA. All rights reserved.
 
 
 class MyListAdapter(context: Context,private val mList: List<MyListData>): RecyclerView.Adapter<MyListAdapter.ViewHolder>() {

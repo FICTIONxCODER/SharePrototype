@@ -1,16 +1,9 @@
-package com.bea.shareprototype
+package com.fictionXcoder.shareprototype
 
-import android.R.string
-import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
-
-
-//  Created by BEA on 2021.
-//  Copyright © 2021 BEA. All rights reserved.
 
 data class Data(var date: String) {
 
@@ -19,7 +12,7 @@ data class Data(var date: String) {
     //private var parameters=mutableListOf<ParameterDataList>()
     fun JSONData():JSONObject {
         try {
-            jsonBody.put("Company", "BEA")
+            jsonBody.put("Company", "fictionXcoder")
             jsonBody.put("FP_version", 1.30)
             jsonBody.put("Family", "WS_")
             jsonBody.put("CAN_ID", 123456789)
