@@ -95,13 +95,6 @@ class MainActivity : AppCompatActivity() {
                 recyclerview.layoutManager = LinearLayoutManager(this)
 
 
-
-                /*// This loop will create 20 Views containing
-                // the image with the count of view
-                for (i in 1..20) {
-                    data.add(MyListData(R.drawable.ic_baseline_article_24, "Item " + i))
-                }*/
-
                 // This will pass the ArrayList to our Adapter
                 val adapter = MyListAdapter(this,data)
 

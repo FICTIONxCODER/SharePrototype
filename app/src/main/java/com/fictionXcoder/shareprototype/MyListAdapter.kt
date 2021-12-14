@@ -1,16 +1,20 @@
 package com.fictionXcoder.shareprototype
 
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
-
 
 
 class MyListAdapter(context: Context,private val mList: List<MyListData>): RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
@@ -40,13 +44,31 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
             val popup = PopupMenu(context, holder.optionmenu)
             popup.inflate(R.menu.options_menu)
             popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
-                override fun onMenuItemClick(p0: MenuItem?): Boolean {
-                    Log.e(">>",p0.toString())
-                    return true
-                }
+                override fun onMenuItemClick(item: MenuItem?): Boolean {
+                    when(item?.itemId){
+                        R.id.Load -> {
+                            Log.d("OptionMenu","Load Clicked")
+                            return true
+                        }
+                        R.id.Share -> {
+                            Log.d("OptionMenu","Share Clicked")
+                            val emailIntent = Intent(Intent.ACTION_SEND)
+                            // set the type to 'email'
+                            emailIntent.type = "vnd.android.cursor.dir/email"
+                            /*emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(MyListData))
+                            emailIntent.setType(GetMimeType(Uri.parse(path)))
+                            emailIntent().startActivity(shareToneIntent)*/
 
-            })
-            popup.show();
+                            return true
+                        }
+                        R.id.Location -> {
+                            Log.d("OptionMenu","Location Clicked")
+                            return true
+                        }
+                }
+                    return false
+            }})
+            popup.show()
         }
     }
 
@@ -61,4 +83,15 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
         val textView: TextView = itemView.findViewById(R.id.textView)
         val optionmenu : TextView = itemView.findViewById(R.id.textViewOptions)
     }
+
+    /*fun GetMimeType(uri: Uri): String? {
+        var mimeType: String? = null
+        mimeType = if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
+            requireContext().contentResolver.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+        }
+        return mimeType
+    }*/
 }
