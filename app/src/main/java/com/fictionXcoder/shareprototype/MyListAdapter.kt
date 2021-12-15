@@ -1,6 +1,5 @@
 package com.fictionXcoder.shareprototype
 
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,11 +8,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -38,7 +36,8 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
         holder.imageView.setImageResource(ItemsViewModel.image)
 
         // sets the text to the textview from our itemHolder class
-        holder.textView.text = ItemsViewModel.text
+        holder.textView.text = ItemsViewModel.filename
+
 
         holder.optionmenu.setOnClickListener {
             val popup = PopupMenu(context, holder.optionmenu)
@@ -52,13 +51,13 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
                         }
                         R.id.Share -> {
                             Log.d("OptionMenu","Share Clicked")
-                            val emailIntent = Intent(Intent.ACTION_SEND)
-                            // set the type to 'email'
-                            emailIntent.type = "vnd.android.cursor.dir/email"
-                            /*emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(MyListData))
-                            emailIntent.setType(GetMimeType(Uri.parse(path)))
-                            emailIntent().startActivity(shareToneIntent)*/
-
+                            val shareIntent = Intent()
+                            shareIntent.action = Intent.ACTION_SEND
+                            shareIntent.type = "application/pdf"
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Files attached from Widescan App.")
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(ItemsViewModel.path))
+                            Log.d("OptionMenu",ItemsViewModel.path)
+                            context.startActivity(Intent.createChooser(shareIntent, "Share File using"))
                             return true
                         }
                         R.id.Location -> {
@@ -83,15 +82,4 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
         val textView: TextView = itemView.findViewById(R.id.textView)
         val optionmenu : TextView = itemView.findViewById(R.id.textViewOptions)
     }
-
-    /*fun GetMimeType(uri: Uri): String? {
-        var mimeType: String? = null
-        mimeType = if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
-            requireContext().contentResolver.getType(uri)
-        } else {
-            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
-        }
-        return mimeType
-    }*/
 }

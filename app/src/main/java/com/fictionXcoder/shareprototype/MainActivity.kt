@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("Files", "Size: " + files.size)
                     for (i in files.indices) {
                         Log.d("Files", "FileName:" + files[i].name)
-                        data.add(MyListData(R.drawable.ic_baseline_article_24, files[i].name))
+                        data.add(MyListData(R.drawable.ic_baseline_article_24, files[i].name,files[i].absolutePath))
                     }
                 }
                 else
