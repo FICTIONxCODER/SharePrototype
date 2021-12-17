@@ -1,8 +1,8 @@
 package com.fictionXcoder.shareprototype
 
+//import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,8 +11,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
 
 
 class MyListAdapter(context: Context,private val mList: List<MyListData>): RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
@@ -44,18 +45,43 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
             popup.inflate(R.menu.options_menu)
             popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
                 override fun onMenuItemClick(item: MenuItem?): Boolean {
+                    Log.d("itemnum", "onMenuItemClick:  $ItemsViewModel")
                     when(item?.itemId){
                         R.id.Load -> {
                             Log.d("OptionMenu","Load Clicked")
                             return true
                         }
                         R.id.Share -> {
-                            Log.d("OptionMenu","Share Clicked")
+
+                            Log.d("OptionMenu","Share Clicked ${ItemsViewModel.path}")
+
                             val shareIntent = Intent()
+                            val uri = FileProvider.getUriForFile(context,
+                                context.applicationContext.packageName + ".provider",
+                                File(ItemsViewModel.path))
                             shareIntent.action = Intent.ACTION_SEND
-                            shareIntent.type = "application/pdf"
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Files attached from Widescan App.")
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(ItemsViewModel.path))
+                            context.grantUriPermission("com.fictionXcoder.shareprototype",
+                                uri,
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            // get mime type
+                            /*val file = File(ItemsViewModel.path)
+                            val uris = Uri.fromFile(file)
+                            var mimetype: String? = null
+                            mimetype = if (uris.scheme == ContentResolver.SCHEME_CONTENT) {
+                                val cr: ContentResolver =
+                                    ApplicationProvider.getApplicationContext<Context>()
+                                        .getContentResolver()
+                                cr.getType(uris)
+                            } else {
+                                val fileExtension =
+                                    MimeTypeMap.getFileExtensionFromUrl(uris.toString())
+                                MimeTypeMap.getSingleton()
+                                    .getMimeTypeFromExtension(fileExtension.toLowerCase())
+                            }*/
+                            shareIntent.type = "*/pdf"
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Files attached from ..")
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                             Log.d("OptionMenu",ItemsViewModel.path)
                             context.startActivity(Intent.createChooser(shareIntent, "Share File using"))
                             return true
