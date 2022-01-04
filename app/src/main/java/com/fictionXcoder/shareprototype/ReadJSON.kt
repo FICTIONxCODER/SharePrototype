@@ -25,5 +25,5 @@ data class ReadJSON(
     @SerializedName("DD_localisation")
     val location: String,
     @SerializedName("parameters")
-    val parameterItems: Array<ParameterDataList>
+    val parameterItems: ArrayList<ParameterDataList>
 )
