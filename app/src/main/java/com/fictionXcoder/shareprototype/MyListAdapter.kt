@@ -64,21 +64,6 @@ class MyListAdapter(context: Context,private val mList: List<MyListData>): Recyc
                                 uri,
                                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            // get mime type
-                            /*val file = File(ItemsViewModel.path)
-                            val uris = Uri.fromFile(file)
-                            var mimetype: String? = null
-                            mimetype = if (uris.scheme == ContentResolver.SCHEME_CONTENT) {
-                                val cr: ContentResolver =
-                                    ApplicationProvider.getApplicationContext<Context>()
-                                        .getContentResolver()
-                                cr.getType(uris)
-                            } else {
-                                val fileExtension =
-                                    MimeTypeMap.getFileExtensionFromUrl(uris.toString())
-                                MimeTypeMap.getSingleton()
-                                    .getMimeTypeFromExtension(fileExtension.toLowerCase())
-                            }*/
                             shareIntent.type = "*/pdf"
                             shareIntent.putExtra(Intent.EXTRA_TEXT, "Files attached from ..")
                             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)

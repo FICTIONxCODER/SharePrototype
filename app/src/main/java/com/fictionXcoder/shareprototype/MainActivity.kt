@@ -11,6 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bea.widescan.ui.favorites.ReadJSON
+import com.google.gson.Gson
+import org.json.JSONObject
 import java.io.*
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1);
             }
-            Log.i("Read Clicked","indise read click listner")
+            Log.i("Read Clicked","inside read click listner")
             val stream = FileInputStream(file)
             var jString: String?
             try {
@@ -67,8 +70,13 @@ class MainActivity : AppCompatActivity() {
                 val bb: MappedByteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())
                 /* Instead of using default, pass in a decoder. */
                  jString = Charset.defaultCharset().decode(bb).toString()
-
+                val obj = JSONObject(jString)
+                Log.i("JSON Obj", "JSON Obj : $obj")
                 Log.i("Reading", jString)
+
+                val readParamJson = Gson().fromJson(jString, ReadJSON::class.java)
+                Log.i("readParamJson", "readParamJson : $readParamJson")
+
 
                 //Listing files
                 val path = Environment.getExternalStorageDirectory().toString() + "/Download"
